@@ -1,0 +1,2 @@
+def aggregator(state):
+    pass

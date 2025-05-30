@@ -1,0 +1,14 @@
+{
+    "code": "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world!\");\n    }\n}",
+    "tests": [
+        {
+            "input": "",
+            "expected_output": "Hello, world!\n"
+        }
+    ],
+    "language": "java",
+    "metadata": {
+        "student_id": "12345",
+        "assignment": "Intro to Java - HelloWorld"
+    }
+}
