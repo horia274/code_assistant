@@ -1,15 +1,14 @@
 from langgraph.graph import StateGraph, START, END
-from langgraph.checkpoint import MemorySaver
 from typing import Dict
 
 # Import nodes
-from nodes.test_runner import test_runner
-from nodes.pmd_runner import pmd_runner
-from nodes.design_detector import design_detector
-from nodes.style_checker import style_checker
-from nodes.ai_detector import ai_detector
-from nodes.router import router
-from nodes.aggregator import aggregator
+from nodes.test_runner.node import test_runner
+from nodes.pmd_runner.node import pmd_runner
+from nodes.design_detector.node import design_detector
+from nodes.style_checker.node import style_checker
+from nodes.ai_detector.node import ai_detector
+from nodes.router.node import router
+from nodes.aggregator.node import aggregator
 
 # Define type for graph state
 GraphState = Dict[str, any]
@@ -17,7 +16,6 @@ GraphState = Dict[str, any]
 def build_graph():
     # Create graph builder
     builder = StateGraph(GraphState)
-    builder.set_checkpoint(MemorySaver())  # Optional memory
 
     # Add nodes
     builder.add_node("Router", router)

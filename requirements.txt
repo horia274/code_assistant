@@ -1,5 +1,6 @@
-langgraph
+langgraph==0.4.7
 openai
 pydantic
 requests
 docker
+pytest>=7.0.0
