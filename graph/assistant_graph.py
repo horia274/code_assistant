@@ -25,6 +25,7 @@ def build_graph():
     builder.add_node("DesignDetector", design_detector)
     builder.add_node("StyleChecker", style_checker)
     builder.add_node("AIDetector", ai_detector)
+    builder.add_node("PlagiarismChecker", plagiarism_checker)
 
     builder.add_node("Aggregator", aggregator)
 
@@ -35,6 +36,7 @@ def build_graph():
     builder.add_edge("Router", "DesignDetector")
     builder.add_edge("Router", "StyleChecker")
     builder.add_edge("Router", "AIDetector")
+    builder.add_edge("Router", "PlagiarismChecker")
 
     # All nodes return to Aggregator
     builder.add_edge("TestRunner", "Aggregator")
@@ -42,6 +44,7 @@ def build_graph():
     builder.add_edge("DesignDetector", "Aggregator")
     builder.add_edge("StyleChecker", "Aggregator")
     builder.add_edge("AIDetector", "Aggregator")
+    builder.add_edge("PlagiarismChecker", "Aggregator")
     builder.add_edge("Aggregator", END)
 
     return builder.compile()
