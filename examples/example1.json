@@ -1,14 +1,19 @@
 {
-    "code": "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world!\");\n    }\n}",
+    "submissions": [
+        {
+            "id": "s001",
+            "code": "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world!\");\n    }\n}"
+        },
+        {
+            "id": "s002",
+            "code": "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}"
+        }
+    ],
     "tests": [
         {
             "input": "",
             "expected_output": "Hello, world!\n"
         }
     ],
-    "language": "java",
-    "metadata": {
-        "student_id": "12345",
-        "assignment": "Intro to Java - HelloWorld"
-    }
+    "intent": "run tests and detect design patterns"
 }
