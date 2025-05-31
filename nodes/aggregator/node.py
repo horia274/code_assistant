@@ -9,20 +9,11 @@ MODEL = "gpt-4o"
 
 
 def aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
-    submission_id = state.get("id", "unknown")
-    results = state.get("results", {})
-    submissions = state.get("submissions", [])
+    results = combine_results(state.get("results", []))
 
     print("Aggregator state:")
     print(state)
     print("--------------------------------")
-
-    output = {
-        "id": submission_id,
-        "results": results,
-        "score": None,
-        "feedback": None
-    }
 
     try:
         client = OpenAI(api_key=API_KEY)
@@ -30,7 +21,7 @@ def aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
         response = client.chat.completions.create(
             model=MODEL,
             temperature=0.3,
-            response_format="json",
+            response_format={ "type": "json_object" },
             messages=[
                 {"role": "system", "content": system_prompt()},
                 {"role": "user", "content": user_prompt(results)}
@@ -38,37 +29,38 @@ def aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
         )
 
         parsed = json.loads(response.choices[0].message.content)
-        output["feedback"] = parsed.get("feedback", None)
-        output["score"] = parsed.get("score", None)
+        feedback = parsed.get("feedback", None)
+        score = parsed.get("score", None)
 
     except Exception as e:
-        output["feedback"] = f"Error generating feedback: {str(e)}"
-        output["score"] = 0
+        feedback = f"Error generating feedback: {str(e)}"
+        score = 0
 
     print("Aggregator result:")
-    print(output)
+    print(f"score: {score}")
+    print(f"feedback: {feedback}")
+    print(f"results: {results}")
     print("--------------------------------")
 
     # Merge into final state
     return {
-        **state,
-        "submissions": submissions + [output]  # Add this result to existing submissions
+        "aggregated_results": results,
+        "score": score,
+        "feedback": feedback
     }
+
+def combine_results(results: list[dict]) -> Dict[str, Any]:
+    aggregated_results = {}
+
+    for result in results:
+        aggregated_results[result["node"]] = result["result"]
+
+    return aggregated_results
 
 def user_prompt(results: Dict[str, Any]) -> str:
     return f"""
-Analyze this code analysis report:
-
+Analyze this code analysis report and give a score and feedback.
 {json.dumps(results, indent=2)}
-
-Please provide:
-- A short, constructive feedback message
-- A score between 0 (bad) and 100 (excellent)
-Return your answer as a JSON with this format:
-{{
-  "score": 85,
-  "feedback": "The code is clean and well-structured. However, it lacks proper exception handling and could use more descriptive variable names."
-}}
 """
 
 def system_prompt() -> str:
@@ -80,8 +72,10 @@ Your job is to:
 2. Assign a numeric score from 0 to 100.
 
 Always return your answer as a valid JSON with exactly these keys:
-- score (int)
-- feedback (string)
+{
+    "score": <int>,
+    "feedback": <string>
+}
 
 Do not explain or justify the score. Be concise.
 """

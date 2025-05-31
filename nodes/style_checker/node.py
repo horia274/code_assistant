@@ -53,9 +53,8 @@ def style_checker(state: Dict[str, Any]) -> Dict[str, Any]:
     print("--------------------------------")
 
     return {
-        **state,
-        "results": {
-            **state.get("results", {}),
-            "StyleChecker": results
-        }
+        "results": [{
+            "node": "StyleChecker",
+            "result": results
+        }]
     }

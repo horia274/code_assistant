@@ -1,28 +1,9 @@
 from typing import Dict, Any, Generator
 
 def mapper(state: Dict[str, Any]) -> Generator[Dict[str, Any], None, None]:
-    submissions = state.get("submissions", [])
     enabled_nodes = state.get("enabled_nodes", [])
-    tests = state.get("tests", "")
-    mode = state.get("mode", "batch")
 
-    if mode == "single":
-        submission = submissions[0] if submissions else {}
+    for _ in enabled_nodes:
         yield {
-            **state,
-            "id": submission.get("id", "unknown"),
-            "code": submission.get("code", ""),
-            "tests": tests,
-            "enabled_nodes": enabled_nodes,
-            "results": {}
+            **state
         }
-    else:
-        for submission in submissions:
-            yield {
-                **state,
-                "id": submission.get("id", "unknown"),
-                "code": submission.get("code", ""),
-                "tests": tests,
-                "enabled_nodes": enabled_nodes,
-                "results": {}
-            }

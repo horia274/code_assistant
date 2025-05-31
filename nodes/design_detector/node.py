@@ -65,11 +65,10 @@ def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
     print("--------------------------------")
 
     return {
-        **state,
-        "results": {
-            **state.get("results", {}),
-            "DesignDetector": result
-        }
+        "results": [{
+            "node": "DesignDetector",
+            "result": result
+        }]
     }
 
 def user_prompt(code: str) -> str:

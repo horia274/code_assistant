@@ -23,10 +23,6 @@ def test_generator(state: Dict[str, Any]) -> Dict[str, Any]:
     if tests:
         return {**state}  # Tests already exist
 
-    if not API_KEY:
-        result["error"] = "OPENAI_API_KEY not set"
-        return {**state, "tests": result["tests"], "error": result["error"]}
-
     try:
         client = OpenAI(api_key=API_KEY)
 
@@ -44,13 +40,16 @@ def test_generator(state: Dict[str, Any]) -> Dict[str, Any]:
         
         if "tests" not in data:
             result["error"] = "No tests generated"
-            return {**state, "tests": result["tests"], "error": result["error"]}
+            return {**state, "tests": []}
         
         tests = []
+        test_id = 1
         for test in data["tests"]:
             if "input" not in test or "expected_output" not in test:
                 continue
+            test["id"] = test_id
             tests.append(test)
+            test_id += 1
         
         result["tests"] = tests
 
@@ -63,8 +62,7 @@ def test_generator(state: Dict[str, Any]) -> Dict[str, Any]:
 
     return {
         **state,
-        "tests": result["tests"],
-        "error": result["error"]
+        "tests": result["tests"]
     }
 
 def user_prompt(code: str, num_tests: int) -> str:

@@ -78,9 +78,8 @@ def pmd_runner(state: Dict[str, Any]) -> Dict[str, Any]:
     print("--------------------------------")
 
     return {
-        **state,
-        "results": {
-            **state.get("results", {}),
-            "PMDRunner": results
-        }
+        "results": [{
+            "node": "PMDRunner",
+            "result": results
+        }]
     }

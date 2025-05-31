@@ -1,5 +1,5 @@
 from langgraph.graph import StateGraph, START, END
-from typing import Dict, Any, TypedDict, Annotated
+from typing import Dict, Any, TypedDict, Annotated, operator
 
 # Import nodes
 from nodes.router.node import router
@@ -15,11 +15,8 @@ from nodes.ai_detector.node import ai_detector
 from nodes.aggregator.node import aggregator
 from nodes.plagiarism_checker.node import plagiarism_checker
 
-class Submission(TypedDict):
-    id: str
-    code: str
-
 class Test(TypedDict):
+    id: int
     input: str
     expected_output: str
 
@@ -28,13 +25,14 @@ class GraphState(TypedDict, total=False):
     id: str
     code: str
     tests: list[Test]
-    enabled_nodes: list[str]
-    results: dict
-    submissions: list[Submission]
     intent: str
     generate_tests: bool
-    plagiarism: Any
-    mode: str
+    num_tests: int
+    enabled_nodes: list[str]
+    results: Annotated[list[dict], operator.add]
+    score: int
+    feedback: str
+    aggregated_results: dict
 
 
 def build_graph():
@@ -87,18 +85,7 @@ def build_graph():
     builder.add_edge("StyleChecker", "Aggregator")
     builder.add_edge("AIDetector", "Aggregator")
 
-    # --- Step 6: Aggregator to optional plagiarism check ---
-    def maybe_run_plagiarism(state: GraphState):
-        return "PlagiarismChecker" if (
-            "PlagiarismChecker" in state.get("enabled_nodes", []) and state.get("mode") == "batch"
-        ) else None
-
-    builder.add_conditional_edges("Aggregator", maybe_run_plagiarism, {
-        "PlagiarismChecker": "PlagiarismChecker"
-    })
-
-    # --- Step 7: Final link to END ---
-    builder.add_edge("PlagiarismChecker", END)
-    builder.add_edge("Aggregator", END)  # fallback if plagiarism is not enabled
+    # --- Step 6: Final link to END ---
+    builder.add_edge("Aggregator", END)
 
     return builder.compile()

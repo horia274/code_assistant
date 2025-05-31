@@ -16,7 +16,8 @@ def test_runner(state: Dict[str, Any]) -> Dict[str, Any]:
     results = {
         "passed": 0,
         "failed": 0,
-        "details": []
+        "details": [],
+        "error": None
     }
 
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -30,18 +31,12 @@ def test_runner(state: Dict[str, Any]) -> Dict[str, Any]:
         try:
             subprocess.run(["javac", java_file], check=True, capture_output=True)
         except subprocess.CalledProcessError as e:
-            updated_state = {
-                **state,
-                "results": {
-                    **state.get("results", {}),
-                    "TestRunner": {
-                        "error": "Compilation failed"
-                    }
-                }
-            }
-
+            results["error"] = f"Compilation failed: {str(e)}"
             return {
-                "submissions": [updated_state]
+                "results": [{
+                    "node": "TestRunner",
+                    "result": results
+                }]
             }
 
         # Step 3: Run tests
@@ -67,19 +62,21 @@ def test_runner(state: Dict[str, Any]) -> Dict[str, Any]:
                     results["failed"] += 1
 
                 results["details"].append({
+                    "id": test.get("id", -1),
+                    "status": status,
                     "input": input_data,
                     "expected_output": expected_output,
-                    "actual_output": actual_output,
-                    "status": status
+                    "actual_output": actual_output
                 })
 
             except subprocess.TimeoutExpired:
                 results["failed"] += 1
                 results["details"].append({
+                    "id": test.get("id", -1),
+                    "status": "timeout",
                     "input": input_data,
                     "expected_output": expected_output,
-                    "actual_output": "",
-                    "status": "timeout"
+                    "actual_output": ""
                 })
 
     print("TestRunner result:")
@@ -87,11 +84,10 @@ def test_runner(state: Dict[str, Any]) -> Dict[str, Any]:
     print("--------------------------------")
 
     return {
-        **state,
-        "results": {
-            **state.get("results", {}),
-            "TestRunner": results
-        }
+        "results": [{
+            "node": "TestRunner",
+            "result": results
+        }]
     }
 
 

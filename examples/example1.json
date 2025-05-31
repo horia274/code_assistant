@@ -1,16 +1,9 @@
 {
-    "submissions": [
-        {
-            "id": "s001",
-            "code": "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world!\");\n    }\n}"
-        },
-        {
-            "id": "s002",
-            "code": "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}"
-        }
-    ],
+    "id": "s001",
+    "code": "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world!\");\n    }\n}",
     "tests": [
         {
+            "id": 1,
             "input": "",
             "expected_output": "Hello, world!\n"
         }
