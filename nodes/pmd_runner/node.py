@@ -71,5 +71,8 @@ def pmd_runner(state: Dict[str, Any]) -> Dict[str, Any]:
 
     return {
         **state,
-        "pmd_results": results
+        "results": {
+            **state.get("results", {}),
+            "PMDRunner": results
+        }
     }

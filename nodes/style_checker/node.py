@@ -46,5 +46,8 @@ def style_checker(state: Dict[str, Any]) -> Dict[str, Any]:
 
     return {
         **state,
-        "style_results": results
+        "results": {
+            **state.get("results", {}),
+            "StyleChecker": results
+        }
     }

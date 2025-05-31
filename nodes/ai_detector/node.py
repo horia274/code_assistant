@@ -51,7 +51,10 @@ def ai_detector(state: Dict[str, Any]) -> Dict[str, Any]:
 
     return {
         **state,
-        "ai_results": result
+        "results": {
+            **state.get("results", {}),
+            "AIDetector": result
+        }
     }
 
 def user_prompt(code: str) -> str:
