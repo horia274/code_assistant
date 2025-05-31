@@ -63,7 +63,7 @@ Return your answer as a JSON with this format:
 
 def system_prompt() -> str:
     return """
-You are a teaching assistant evaluating Java student code.
+You are a teaching assistant evaluating student code.
 You receive the analysis results from several tools (tests, linter, design patterns, etc.).
 Your job is to:
 1. Give clear, helpful feedback that mentions both strengths and areas to improve.

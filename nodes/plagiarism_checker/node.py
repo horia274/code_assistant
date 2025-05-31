@@ -6,7 +6,7 @@ from typing import Dict, Any
 JPLAG_JAR_PATH = "/Users/aignat/jplag/JPlag-3.0.0/jplag-3.0.0-jar-with-dependencies.jar"
 
 def plagiarism_checker(state: Dict[str, Any]) -> Dict[str, Any]:
-    sources = state.get("sources", [])
+    submissions = state.get("submissions", [])
     
     result = {
         "similarities": {},
@@ -14,9 +14,12 @@ def plagiarism_checker(state: Dict[str, Any]) -> Dict[str, Any]:
         "error": None
     }
 
-    if not sources or not isinstance(sources, list):
-        result["error"] = "Missing or invalid 'sources'"
-        return {**state, "plagiarism_report": result}
+    if not submissions or not isinstance(submissions, list):
+        result["error"] = "Missing or invalid 'submissions'"
+        return {**state, "results": {
+            **state.get("results", {}),
+            "PlagiarismChecker": result
+        }}
 
     try:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -26,7 +29,7 @@ def plagiarism_checker(state: Dict[str, Any]) -> Dict[str, Any]:
             id_to_filename = {}
 
             # Save each student's code with their ID in the filename
-            for i, entry in enumerate(sources):
+            for i, entry in enumerate(submissions):
                 student_id = entry.get("id", f"student{i+1}")
                 code = entry.get("code", "")
                 filename = f"{student_id}.java"
@@ -68,5 +71,5 @@ def plagiarism_checker(state: Dict[str, Any]) -> Dict[str, Any]:
 
     return {
         **state,
-        "plagiarism_report": result
+        "plagiarism": result
     }
