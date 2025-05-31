@@ -2,12 +2,8 @@ import os
 from openai import OpenAI
 import json
 from typing import Dict, Any
-# from dotenv import load_dotenv
 
-# TODO: fix this!
-# load_dotenv()
 
-# API_KEY = os.getenv("OPENAI_API_KEY")
 API_KEY = "sk-proj-iJsUrmGG2EjlcGbzhQ63T3BlbkFJilRGJUeOX0ZjbPpWJ2zP"
 MODEL = "ft:gpt-4o-2024-08-06:personal::A3tBJ2Rm"
 
@@ -67,7 +63,7 @@ def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 def user_prompt(code: str) -> str:
-    return f"What design patterns do you detect from this source code:\n. {code}"
+    return f"What design patterns do you detect from this source code:\n\n{code}"
 
 def system_prompt() -> str:
     return """
