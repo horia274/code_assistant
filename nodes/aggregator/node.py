@@ -40,6 +40,10 @@ def aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
         output["feedback"] = f"Error generating feedback: {str(e)}"
         output["score"] = 0
 
+    print("Aggregator result:")
+    print(output)
+    print("--------------------------------")
+
     # Merge into final state
     return {
         "submissions": [output]  # important for final reducer

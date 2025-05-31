@@ -53,6 +53,10 @@ def test_generator(state: Dict[str, Any]) -> Dict[str, Any]:
     except Exception as e:
         result["error"] = str(e)
 
+    print("TestGenerator result:")
+    print(result)
+    print("--------------------------------")
+
     return {
         **state,
         "tests": result["tests"],

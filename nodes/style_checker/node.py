@@ -44,6 +44,10 @@ def style_checker(state: Dict[str, Any]) -> Dict[str, Any]:
         except subprocess.CalledProcessError as e:
             results["error"] = e.stderr
 
+    print("StyleChecker result:")
+    print(results)
+    print("--------------------------------")
+
     return {
         **state,
         "results": {

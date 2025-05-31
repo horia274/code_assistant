@@ -49,6 +49,10 @@ def ai_detector(state: Dict[str, Any]) -> Dict[str, Any]:
     except Exception as e:
         result["error"] = str(e)
 
+    print("AIDetector result:")
+    print(result)
+    print("--------------------------------")
+
     return {
         **state,
         "results": {

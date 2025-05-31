@@ -69,6 +69,11 @@ def plagiarism_checker(state: Dict[str, Any]) -> Dict[str, Any]:
     except subprocess.CalledProcessError as e:
         result["error"] = e.stderr or str(e)
 
+
+    print("PlagiarismChecker result:")
+    print(result)
+    print("--------------------------------")
+
     return {
         **state,
         "plagiarism": result

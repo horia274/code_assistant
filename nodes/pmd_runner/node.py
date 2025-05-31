@@ -69,6 +69,10 @@ def pmd_runner(state: Dict[str, Any]) -> Dict[str, Any]:
         except Exception as e:
             results["error"] = str(e)
 
+    print("PMDRunner result:")
+    print(results)
+    print("--------------------------------")
+
     return {
         **state,
         "results": {

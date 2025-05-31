@@ -79,6 +79,10 @@ def test_runner(state: Dict[str, Any]) -> Dict[str, Any]:
                     "status": "timeout"
                 })
 
+    print("TestRunner result:")
+    print(results)
+    print("--------------------------------")
+
     return {
         **state,
         "results": {

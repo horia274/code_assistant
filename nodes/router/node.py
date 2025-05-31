@@ -35,8 +35,13 @@ def router(state: Dict[str, Any]) -> Dict[str, Any]:
                 {"role": "user", "content": user_prompt(intent, tests)}
             ]
         )
-
+        
         result = json.loads(response.choices[0].message.content)
+
+        print("Router result:")
+        print(result)
+        print("--------------------------------")
+
         return {
             **state,
             "enabled_nodes": result.get("enabled_nodes", DEFAULT_NODES),
