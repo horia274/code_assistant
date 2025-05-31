@@ -1,5 +1,5 @@
 from langgraph.graph import StateGraph, START, END
-from typing import Dict, Any, TypedDict
+from typing import Dict, Any, TypedDict, Annotated
 
 # Import nodes
 from nodes.router.node import router
@@ -34,6 +34,7 @@ class GraphState(TypedDict, total=False):
     intent: str
     generate_tests: bool
     plagiarism: Any
+    mode: str
 
 
 def build_graph():

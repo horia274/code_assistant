@@ -11,6 +11,10 @@ def pmd_runner(state: Dict[str, Any]) -> Dict[str, Any]:
         "violations": [],
         "error": None
     }
+    
+    print("PMDRunner state:")
+    print(state)
+    print("--------------------------------")
 
     # Set PMD path explicitly in case subprocess doesn't inherit shell env
     pmd_path = "/Users/aignat/pmd-bin-7.13.0/bin"

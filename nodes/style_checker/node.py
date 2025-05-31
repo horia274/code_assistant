@@ -10,6 +10,10 @@ def style_checker(state: Dict[str, Any]) -> Dict[str, Any]:
         "violations": [],
         "error": None
     }
+    
+    print("StyleChecker state:")
+    print(state)
+    print("--------------------------------")
 
     # Absolute path to Google checks XML
     google_checks = "/Users/aignat/google_checks.xml"

@@ -9,6 +9,10 @@ def test_runner(state: Dict[str, Any]) -> Dict[str, Any]:
     code = state.get("code", "")
     tests = state.get("tests", [])
     
+    print("TestRunner state:")
+    print(state)
+    print("--------------------------------")
+
     results = {
         "passed": 0,
         "failed": 0,

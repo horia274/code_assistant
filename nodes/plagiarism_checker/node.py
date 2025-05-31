@@ -8,6 +8,10 @@ JPLAG_JAR_PATH = "/Users/aignat/jplag/JPlag-3.0.0/jplag-3.0.0-jar-with-dependenc
 def plagiarism_checker(state: Dict[str, Any]) -> Dict[str, Any]:
     submissions = state.get("submissions", [])
     
+    print("PlagiarismChecker state:")
+    print(state)
+    print("--------------------------------")
+
     result = {
         "similarities": {},
         "report_path": None,

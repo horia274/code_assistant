@@ -15,6 +15,10 @@ def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
         "error": None
     }
 
+    print("DesignDetector state:")
+    print(state)
+    print("--------------------------------")
+
     try:
         client = OpenAI(api_key=API_KEY)
 

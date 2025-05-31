@@ -11,6 +11,11 @@ MODEL = "gpt-4o"
 def aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
     submission_id = state.get("id", "unknown")
     results = state.get("results", {})
+    submissions = state.get("submissions", [])
+
+    print("Aggregator state:")
+    print(state)
+    print("--------------------------------")
 
     output = {
         "id": submission_id,
@@ -46,7 +51,8 @@ def aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
 
     # Merge into final state
     return {
-        "submissions": [output]  # important for final reducer
+        **state,
+        "submissions": submissions + [output]  # Add this result to existing submissions
     }
 
 def user_prompt(results: Dict[str, Any]) -> str:

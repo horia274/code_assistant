@@ -13,6 +13,10 @@ def router(state: Dict[str, Any]) -> Dict[str, Any]:
     intent = (state.get("intent") or "").strip()
     submissions = state.get("submissions", [])
     tests = state.get("tests", None)
+    
+    print("Router state:")
+    print(state)
+    print("--------------------------------")
 
     if not intent:
         # Fallback to default behavior

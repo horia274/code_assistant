@@ -14,6 +14,10 @@ def ai_detector(state: Dict[str, Any]) -> Dict[str, Any]:
         "ai_generated_analysis": {},
         "error": None
     }
+    
+    print("AIDetector state:")
+    print(state)
+    print("--------------------------------")
 
     try:
         client = OpenAI(api_key=API_KEY)

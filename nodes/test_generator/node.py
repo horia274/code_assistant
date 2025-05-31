@@ -15,6 +15,10 @@ def test_generator(state: Dict[str, Any]) -> Dict[str, Any]:
         "tests": [],
         "error": None
     }
+    
+    print("TestGenerator state:")
+    print(state)
+    print("--------------------------------")
 
     if tests:
         return {**state}  # Tests already exist
