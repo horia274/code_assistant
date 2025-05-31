@@ -1,4 +1,4 @@
-from graph.assistant_graph import build_graph
+from graph.builder import build_graph
 from utils.code_utils import load_input
 
 
