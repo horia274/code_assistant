@@ -15,10 +15,6 @@ def ai_detector(state: Dict[str, Any]) -> Dict[str, Any]:
         "error": None
     }
 
-    if not API_KEY:
-        result["error"] = "OPENAI_API_KEY not set"
-        return {**state, "ai_results": result}
-
     try:
         client = OpenAI(api_key=API_KEY)
 

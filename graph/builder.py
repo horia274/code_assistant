@@ -1,5 +1,5 @@
 from langgraph.graph import StateGraph, START, END
-from typing import Dict, Any
+from typing import Dict, Any, TypedDict
 
 # Import nodes
 from nodes.router.node import router
@@ -15,8 +15,25 @@ from nodes.ai_detector.node import ai_detector
 from nodes.aggregator.node import aggregator
 from nodes.plagiarism_checker.node import plagiarism_checker
 
+class Submission(TypedDict):
+    id: str
+    code: str
+
+class Test(TypedDict):
+    input: str
+    expected_output: str
+
 # Define state
-GraphState = Dict[str, Any]
+class GraphState(TypedDict, total=False):
+    id: str
+    code: str
+    tests: list[Test]
+    enabled_nodes: list[str]
+    results: dict
+    submissions: list[Submission]
+    intent: str
+    generate_tests: bool
+    plagiarism: Any
 
 
 def build_graph():

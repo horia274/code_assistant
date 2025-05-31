@@ -9,6 +9,7 @@ def mapper(state: Dict[str, Any]) -> Generator[Dict[str, Any], None, None]:
     if mode == "single":
         submission = submissions[0] if submissions else {}
         yield {
+            **state,
             "id": submission.get("id", "unknown"),
             "code": submission.get("code", ""),
             "tests": tests,
@@ -18,6 +19,7 @@ def mapper(state: Dict[str, Any]) -> Generator[Dict[str, Any], None, None]:
     else:
         for submission in submissions:
             yield {
+                **state,
                 "id": submission.get("id", "unknown"),
                 "code": submission.get("code", ""),
                 "tests": tests,

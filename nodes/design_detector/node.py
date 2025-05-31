@@ -15,10 +15,6 @@ def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
         "error": None
     }
 
-    if not API_KEY:
-        result["error"] = "OPENAI_API_KEY not set"
-        return {**state, "design_results": result}
-
     try:
         client = OpenAI(api_key=API_KEY)
 
@@ -43,7 +39,10 @@ def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
         if "design patterns" not in content:
             return {
                 **state,
-                "design_results": result
+                "results": {
+                    **state.get("results", {}),
+                    "DesignDetector": result
+                },
             }
 
         patterns = []
@@ -56,7 +55,6 @@ def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
 
     except Exception as e:
         result["error"] = str(e)
-
 
     print("DesignDetector result:")
     print(result)
