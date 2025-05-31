@@ -15,6 +15,13 @@ def test_runner(state: Dict[str, Any]) -> Dict[str, Any]:
         "details": []
     }
 
+
+    if not code or not tests or len(tests) == 0:
+        return {
+            **state,
+            "test_results": results
+        }
+
     with tempfile.TemporaryDirectory() as tmpdir:
         # Step 1: Save the code to a .java file
         class_name = extract_main_class_name(code)
