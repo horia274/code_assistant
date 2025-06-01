@@ -30,7 +30,7 @@ def pmd_runner(state: Dict[str, Any]) -> Dict[str, Any]:
 
         try:
             # Run PMD with minimal rules to avoid dependency issues
-            subprocess.run(
+            result = subprocess.run(
                 [
                     "pmd", "check",
                     "-d", tmpdir,
@@ -78,7 +78,7 @@ def pmd_runner(state: Dict[str, Any]) -> Dict[str, Any]:
     print("--------------------------------")
 
     return {
-        "nodes_results": [{
+        "results": [{
             "node": "PMDRunner",
             "result": results
         }]

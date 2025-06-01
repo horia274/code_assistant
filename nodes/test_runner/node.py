@@ -33,7 +33,7 @@ def test_runner(state: Dict[str, Any]) -> Dict[str, Any]:
         except subprocess.CalledProcessError as e:
             results["error"] = f"Compilation failed: {str(e)}"
             return {
-                "nodes_results": [{
+                "results": [{
                     "node": "TestRunner",
                     "result": results
                 }]
@@ -84,7 +84,7 @@ def test_runner(state: Dict[str, Any]) -> Dict[str, Any]:
     print("--------------------------------")
 
     return {
-        "nodes_results": [{
+        "results": [{
             "node": "TestRunner",
             "result": results
         }]

@@ -29,13 +29,13 @@ class GraphState(TypedDict, total=False):
     generate_tests: bool
     num_tests: int
     enabled_nodes: list[str]
-    nodes_results: Annotated[list[dict], operator.add]
+    results: Annotated[list[dict], operator.add]
     score: int
     feedback: str
-    nodes_aggregated_results: dict
+    aggregated_results: dict
 
 
-def build_per_submission_graph():
+def build_graph():
     builder = StateGraph(GraphState)
 
     # --- Step 1: Core node registration ---

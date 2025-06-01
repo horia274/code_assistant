@@ -42,9 +42,10 @@ def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
         
         if "design patterns" not in content:
             return {
-                "nodes_results": {
-                    "node": "DesignDetector",
-                    "result": result
+                **state,
+                "results": {
+                    **state.get("results", {}),
+                    "DesignDetector": result
                 },
             }
 
@@ -64,7 +65,7 @@ def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
     print("--------------------------------")
 
     return {
-        "nodes_results": [{
+        "results": [{
             "node": "DesignDetector",
             "result": result
         }]
