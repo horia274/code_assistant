@@ -8,9 +8,10 @@ MODEL = "gpt-4o"
 
 
 def test_generator(state: Dict[str, Any]) -> Dict[str, Any]:
-    code = state.get("code", "")
+    code = state.get("submissions", [{}])[0].get("code", "")
     tests = state.get("tests")
     num_tests = state.get("num_tests", 3)
+    
     result = {
         "tests": [],
         "error": None
