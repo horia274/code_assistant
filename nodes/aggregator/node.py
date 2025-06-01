@@ -9,7 +9,7 @@ MODEL = "gpt-4o"
 
 
 def aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
-    results = combine_results(state.get("results", []))
+    results = combine_results(state.get("nodes_results", []))
 
     print("Aggregator state:")
     print(state)
@@ -44,7 +44,7 @@ def aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
 
     # Merge into final state
     return {
-        "aggregated_results": results,
+        "nodes_aggregated_results": results,
         "score": score,
         "feedback": feedback
     }
