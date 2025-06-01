@@ -13,7 +13,6 @@ from nodes.style_checker.node import style_checker
 from nodes.ai_detector.node import ai_detector
 
 from nodes.aggregator.node import aggregator
-from nodes.plagiarism_checker.node import plagiarism_checker
 
 class Test(TypedDict):
     id: int
@@ -50,7 +49,6 @@ def build_graph():
     builder.add_node("AIDetector", ai_detector)
 
     builder.add_node("Aggregator", aggregator)
-    builder.add_node("PlagiarismChecker", plagiarism_checker)
 
     # --- Step 2: Start flow ---
     builder.add_edge(START, "Router")
@@ -68,7 +66,7 @@ def build_graph():
 
     # --- Step 4: Fan out to analysis nodes per submission ---
     def per_submission_nodes(state: GraphState):
-        return [n for n in state.get("enabled_nodes", []) if n != "PlagiarismChecker"]
+        return [n for n in state.get("enabled_nodes", [])]
 
     builder.add_conditional_edges("Mapper", per_submission_nodes, {
         "TestRunner": "TestRunner",

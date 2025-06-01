@@ -69,7 +69,7 @@ decide what code analysis tasks should be enabled and if tests should be generat
 def system_prompt() -> str:
     return """
 You are a smart assistant helping to analyze student code.
-The user will describe what they want to check (e.g., test the code, detect patterns, check for plagiarism).
+The user will describe what they want to check (e.g., test the code, detect patterns, check for style issues).
 Based on that, decide which of the following nodes should be enabled:
 
 - TestRunner - if the user wants to run a set of tests on the code

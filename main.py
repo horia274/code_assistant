@@ -4,7 +4,7 @@ from graph.builder import build_graph
 
 
 def main():
-    file_path = "examples/example3.json"
+    file_path = "examples/example1.json"
     with open(file_path, 'r') as file:
         input_data = json.load(file)
 
