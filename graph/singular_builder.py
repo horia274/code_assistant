@@ -30,11 +30,17 @@ class GraphState(TypedDict, total=False):
     num_tests: int
     enabled_nodes: list[str]
     nodes_results: Annotated[list[dict], operator.add]
+    score: int
+    feedback: str
+    nodes_aggregated_results: dict
 
 
 def build_per_submission_graph():
     builder = StateGraph(GraphState)
 
+    # --- Step 1: Core node registration ---
+    builder.add_node("Router", router)
+    builder.add_node("TestGenerator", test_generator)
     builder.add_node("Mapper", mapper)
 
     builder.add_node("TestRunner", test_runner)
@@ -44,9 +50,23 @@ def build_per_submission_graph():
     builder.add_node("AIDetector", ai_detector)
 
     builder.add_node("Aggregator", aggregator)
+    builder.add_node("PlagiarismChecker", plagiarism_checker)
 
-    builder.add_edge(START, "Mapper")
+    # --- Step 2: Start flow ---
+    builder.add_edge(START, "Router")
 
+    # --- Step 3: Route to optional test generator ---
+    def needs_test_generation(state: GraphState):
+        return "TestGenerator" if state.get("generate_tests", False) else "Mapper"
+
+    builder.add_conditional_edges("Router", needs_test_generation, {
+        "TestGenerator": "TestGenerator",
+        "Mapper": "Mapper"
+    })
+
+    builder.add_edge("TestGenerator", "Mapper")
+
+    # --- Step 4: Fan out to analysis nodes per submission ---
     def per_submission_nodes(state: GraphState):
         return [n for n in state.get("enabled_nodes", []) if n != "PlagiarismChecker"]
 
@@ -58,12 +78,14 @@ def build_per_submission_graph():
         "AIDetector": "AIDetector"
     })
 
+    # --- Step 5: Connect each analysis node to Aggregator ---
     builder.add_edge("TestRunner", "Aggregator")
     builder.add_edge("DesignDetector", "Aggregator")
     builder.add_edge("PMDRunner", "Aggregator")
     builder.add_edge("StyleChecker", "Aggregator")
     builder.add_edge("AIDetector", "Aggregator")
 
+    # --- Step 6: Final link to END ---
     builder.add_edge("Aggregator", END)
 
     return builder.compile()

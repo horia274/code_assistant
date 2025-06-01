@@ -1,15 +1,15 @@
 import json
 
-from graph.batch_builder import build_batch_graph
+from graph.singular_builder import build_per_submission_graph
 
 
 def main():
-    file_path = "examples/batch/example.json"
+    file_path = "examples/singular/example3.json"
     with open(file_path, 'r') as file:
         input_data = json.load(file)
 
     # Build and run the graph
-    graph = build_batch_graph()
+    graph = build_per_submission_graph()
     result = graph.invoke(input_data)
 
     # Display the aggregated results
