@@ -3,7 +3,7 @@ from nodes.design_detector.tests.graph import build_graph
 
 graph = build_graph()
 
-with open("nodes/design_detector/tests/sample_code.java", "r") as f:
+with open("nodes/design_detector/tests/Main.java", "r") as f:
     code = f.read()
 
 result = graph.invoke({"code": code})
