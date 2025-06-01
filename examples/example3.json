@@ -1,5 +1,5 @@
 {
     "id": "s003",
     "code": "public class StrategyDemo { public static void main(String[] args) { new Context((a, b) -> a + b).execute(5, 3); } interface Strategy { int doOperation(int a, int b); } static class Context { Strategy strategy; Context(Strategy s) { this.strategy = s; } void execute(int a, int b) { System.out.println(\"Result: \" + strategy.doOperation(a, b)); } } }",
-    "intent": "detect design patterns and check if it is ai generated, run tests and pmd"
+    "intent": "detect design patterns and check if it is ai generated, run tests, pmd, style checker"
 }
