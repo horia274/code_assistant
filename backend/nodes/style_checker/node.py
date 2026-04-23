@@ -1,7 +1,8 @@
-import os
 import subprocess
 import tempfile
 from typing import Dict, Any
+
+from settings import checkstyle_config_path
 
 
 def style_checker(state: Dict[str, Any]) -> Dict[str, Any]:
@@ -15,8 +16,18 @@ def style_checker(state: Dict[str, Any]) -> Dict[str, Any]:
     print(state)
     print("--------------------------------")
 
-    # Absolute path to Google checks XML
-    google_checks = "/Users/aignat/google_checks.xml"
+    google_checks = checkstyle_config_path()
+    if not google_checks:
+        results["error"] = (
+            "CHECKSTYLE_CONFIG is not set. Point it to a Checkstyle rules XML "
+            "(e.g. google_checks.xml). See backend/.env.example."
+        )
+        return {
+            "results": [{
+                "node": "StyleChecker",
+                "result": results
+            }]
+        }
 
     with tempfile.TemporaryDirectory() as tmpdir:
         java_file = os.path.join(tmpdir, "Main.java")

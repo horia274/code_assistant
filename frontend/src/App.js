@@ -24,6 +24,8 @@ import { Add as AddIcon, Delete as DeleteIcon, ExpandMore as ExpandMoreIcon } fr
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
+const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+
 function App() {
   const [codeId, setCodeId] = useState('');
   const [code, setCode] = useState('');
@@ -57,7 +59,7 @@ function App() {
     setLoading(true);
     setResults(null); // Clear previous results
     try {
-      const response = await fetch('http://localhost:5000/analyze-code', {
+      const response = await fetch(`${API_BASE}/analyze-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

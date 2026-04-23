@@ -1,11 +1,10 @@
-import os
 import json
 from typing import Any, Dict
 from openai import OpenAI
 
+from settings import openai_api_key, openai_model
 
-API_KEY = "sk-proj-iJsUrmGG2EjlcGbzhQ63T3BlbkFJilRGJUeOX0ZjbPpWJ2zP"
-MODEL = "gpt-4o"
+MODEL = openai_model()
 
 
 def aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
@@ -15,8 +14,17 @@ def aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
     print(state)
     print("--------------------------------")
 
+    api_key = openai_api_key()
+    if not api_key:
+        return {
+            "aggregated_results": results,
+            "score": 0,
+            "feedback": "OPENAI_API_KEY is not set; cannot generate score and feedback. "
+            "See backend/.env.example.",
+        }
+
     try:
-        client = OpenAI(api_key=API_KEY)
+        client = OpenAI(api_key=api_key)
         
         response = client.chat.completions.create(
             model=MODEL,

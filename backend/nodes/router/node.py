@@ -1,11 +1,10 @@
-import os
 import json
 from typing import Dict, Any, List
 from openai import OpenAI
 
+from settings import openai_api_key, openai_model
 
-API_KEY = "sk-proj-iJsUrmGG2EjlcGbzhQ63T3BlbkFJilRGJUeOX0ZjbPpWJ2zP"
-MODEL = "gpt-4o"
+MODEL = openai_model()
 DEFAULT_NODES = ["TestRunner", "PMDRunner", "DesignDetector", "StyleChecker", "AIDetector"]
 
 
@@ -25,8 +24,17 @@ def router(state: Dict[str, Any]) -> Dict[str, Any]:
             "generate_tests": tests is None
         }
 
+    api_key = openai_api_key()
+    if not api_key:
+        return {
+            **state,
+            "enabled_nodes": DEFAULT_NODES,
+            "generate_tests": tests is None,
+            "error": "OPENAI_API_KEY is not set (see backend/.env.example).",
+        }
+
     try:
-        client = OpenAI(api_key=API_KEY)
+        client = OpenAI(api_key=api_key)
 
         response = client.chat.completions.create(
             model=MODEL,

@@ -3,3 +3,6 @@ __pycache__/
 result
 package-lock.json
 node_modules
+.DS_Store
+backend/graph.png
+*.class

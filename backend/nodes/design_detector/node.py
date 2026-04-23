@@ -1,11 +1,10 @@
-import os
 from openai import OpenAI
 import json
 from typing import Dict, Any
 
+from settings import openai_api_key, openai_design_detector_model
 
-API_KEY = "sk-proj-iJsUrmGG2EjlcGbzhQ63T3BlbkFJilRGJUeOX0ZjbPpWJ2zP"
-MODEL = "ft:gpt-4o-2024-08-06:personal::A3tBJ2Rm"
+MODEL = openai_design_detector_model()
 
 
 def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
@@ -20,7 +19,16 @@ def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
     print("--------------------------------")
 
     try:
-        client = OpenAI(api_key=API_KEY)
+        api_key = openai_api_key()
+        if not api_key:
+            result["error"] = "OPENAI_API_KEY is not set (see backend/.env.example)."
+            return {
+                "results": [{
+                    "node": "DesignDetector",
+                    "result": result
+                }]
+            }
+        client = OpenAI(api_key=api_key)
 
         response = client.chat.completions.create(
             model=MODEL,
@@ -42,11 +50,10 @@ def design_detector(state: Dict[str, Any]) -> Dict[str, Any]:
         
         if "design patterns" not in content:
             return {
-                **state,
-                "results": {
-                    **state.get("results", {}),
-                    "DesignDetector": result
-                },
+                "results": [{
+                    "node": "DesignDetector",
+                    "result": result
+                }]
             }
 
         patterns = []

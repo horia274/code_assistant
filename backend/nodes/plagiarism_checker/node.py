@@ -3,7 +3,7 @@ import subprocess
 import tempfile
 from typing import Dict, Any
 
-JPLAG_JAR_PATH = "/Users/aignat/jplag/JPlag-3.0.0/jplag-3.0.0-jar-with-dependencies.jar"
+from settings import jplag_jar_path
 
 def plagiarism_checker(state: Dict[str, Any]) -> Dict[str, Any]:
     submissions = state.get("submissions", [])
@@ -25,6 +25,11 @@ def plagiarism_checker(state: Dict[str, Any]) -> Dict[str, Any]:
             "PlagiarismChecker": result
         }}
 
+    jar = jplag_jar_path()
+    if not jar:
+        result["error"] = "JPLAG_JAR is not set (see backend/.env.example)."
+        return {**state, "plagiarism": result}
+
     try:
         with tempfile.TemporaryDirectory() as tmpdir:
             sources_dir = os.path.join(tmpdir, "sources")
@@ -44,7 +49,7 @@ def plagiarism_checker(state: Dict[str, Any]) -> Dict[str, Any]:
 
             # Run JPlag
             command = [
-                "java", "-jar", JPLAG_JAR_PATH,
+                "java", "-jar", jar,
                 "-l", "java",
                 "-d", sources_dir
             ]

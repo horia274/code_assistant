@@ -4,6 +4,8 @@ import subprocess
 import tempfile
 from typing import Dict, Any
 
+from settings import pmd_bin_dir
+
 
 def pmd_runner(state: Dict[str, Any]) -> Dict[str, Any]:
     code = state.get("code", "")
@@ -16,10 +18,11 @@ def pmd_runner(state: Dict[str, Any]) -> Dict[str, Any]:
     print(state)
     print("--------------------------------")
 
-    # Set PMD path explicitly in case subprocess doesn't inherit shell env
-    pmd_path = "/Users/aignat/pmd-bin-7.13.0/bin"
-    if pmd_path not in os.environ["PATH"]:
-        os.environ["PATH"] += os.pathsep + pmd_path
+    pmd_path = pmd_bin_dir()
+    if pmd_path:
+        path = os.environ.get("PATH", "")
+        if pmd_path not in path:
+            os.environ["PATH"] = path + os.pathsep + pmd_path
 
     with tempfile.TemporaryDirectory() as tmpdir:
         java_file = os.path.join(tmpdir, "Main.java")

@@ -2,9 +2,9 @@ from typing import Dict, Any
 from openai import OpenAI
 import json
 
+from settings import openai_api_key, openai_model
 
-API_KEY = "sk-proj-iJsUrmGG2EjlcGbzhQ63T3BlbkFJilRGJUeOX0ZjbPpWJ2zP"
-MODEL = "gpt-4o"
+MODEL = openai_model()
 
 
 def test_generator(state: Dict[str, Any]) -> Dict[str, Any]:
@@ -24,7 +24,11 @@ def test_generator(state: Dict[str, Any]) -> Dict[str, Any]:
         return {**state}  # Tests already exist
 
     try:
-        client = OpenAI(api_key=API_KEY)
+        api_key = openai_api_key()
+        if not api_key:
+            result["error"] = "OPENAI_API_KEY is not set (see backend/.env.example)."
+            return {**state, "tests": []}
+        client = OpenAI(api_key=api_key)
 
         response = client.chat.completions.create(
             model=MODEL,
